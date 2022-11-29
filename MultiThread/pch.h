@@ -14,6 +14,6 @@
 
 #pragma  comment(lib, "odbc32.lib")
 
-#import "C:\Program Files\Common Files\System\ADO\msado15.dll" rename("EOF", "EndOfFile")
+#import "C:\Program Files (x86)\Common Files\System\ADO\msado15.dll" rename("EOF", "adoEOF")
 
 #endif //PCH_H

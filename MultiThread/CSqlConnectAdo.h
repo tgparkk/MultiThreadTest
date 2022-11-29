@@ -1,13 +1,19 @@
 #pragma once
+
+
 class CSqlConnectAdo
 {
 public:
 	CSqlConnectAdo();
 
-public:
-	connect()
-	{
+private:
+	ADODB::_ConnectionPtr pcon;
 
-	}
+public:
+// 	connect()
+// 	{
+// 		HRESULT hr = 
+// 
+// 	}
 };
 
