@@ -21,7 +21,8 @@ ThreadPool::~ThreadPool()
 	}
 }
 
-void ThreadPool::WorkerThread() {
+void ThreadPool::WorkerThread() 
+{
 	while (true) 
 	{
 		// std::lock_guard 는 lock과 unlock 사이에 lock,unlock 사용 불가
@@ -36,26 +37,42 @@ void ThreadPool::WorkerThread() {
 		//		b) lock을 다시 얻고(wait(lock), 2)부터 반복
 
 
+		// 주석하면 서버 상태?
 		if (stop_all && jobs_.empty())
 		{
 			return;
 		}
 
-		// 맨 앞의 job 을 뺀다.
-		std::function<void()> job = std::move(jobs_.front());
-		jobs_.pop();
-		lock.unlock();
+		if (!jobs_.empty())
+		{
+			// 맨 앞의 job 을 뺀다.
+			std::function<void()> job = std::move(jobs_.front());
+			jobs_.pop();
+			lock.unlock();
 
-		// 해당 job 을 수행한다 :)
-		job();
+			// 해당 job 을 수행한다 :)
+			//job();
+		}
+
 	}
 }
 
-void ThreadPool::EnqueueJob(std::function<void()> job) {
+void ThreadPool::WorkerThread_Promise()
+{
+	while (true)
+	{
+		std::promise<void*> p;
+		std::future<void*> data = p.get_future();
+	}
+}
+
+void ThreadPool::EnqueueJob(std::function<void()> job) 
+{
 	if (stop_all) 
 	{
 		throw std::runtime_error("ThreadPool 사용 중지됨");
 	}
+	
 	{
 		std::lock_guard<std::mutex> lock(m_job_q_);
 		jobs_.push(std::move(job));
@@ -63,4 +80,13 @@ void ThreadPool::EnqueueJob(std::function<void()> job) {
 	
 	// 대기하고 있는 하나의 thread 깨우기
 	cv_job_q_.notify_one();
+}
+
+void ThreadPool::EnqueueJob_Promise(std::function<void()> job)
+{
+	if (stop_all)
+	{
+		throw std::runtime_error("ThreadPool 사용 중지됨");
+	}
+
 }
