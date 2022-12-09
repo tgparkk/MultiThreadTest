@@ -11,11 +11,12 @@ int main()
 
 	for (int i = 0; i < 10; i++) 
 	{
-// 		pool.EnqueueJob([i]() 
-// 			{ 
-// 				Task1 t1;
-// 				t1.work(i % 3 + 1, i); 
-// 			});
+		pool.EnqueueJob([i]() 
+			{ 
+				Task1 t1;
+				t1.work(i % 3 + 1, i); 
+				t1.work1(i);
+			});
 	}
 
 	return 0;
