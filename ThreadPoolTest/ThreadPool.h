@@ -4,6 +4,7 @@
 #include <thread>
 #include <mutex>
 #include <queue>
+#include <future>
 
 class ThreadPool
 {
@@ -13,7 +14,9 @@ public:
 
 public:
 	void WorkerThread();
+	void WorkerThread_Promise();
 	void EnqueueJob(std::function<void()> job);
+	void EnqueueJob_Promise(std::function<void()> job);
 
 private:
 	// 총 Worker 쓰레드의 개수.
