@@ -12,6 +12,8 @@ public:
 public:
 	void work(int t, int id);
 
+	void work1(int t);
+
 private:
 
 };
