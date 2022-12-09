@@ -20,3 +20,8 @@ void Task1::work(int t, int id)
 	std::cout << id << " end after "<< t << "\n" <<std::endl;
 	//printf("%d end after %ds\n", id, t);
 }
+
+void Task1::work1(int t)
+{
+	std::cout << t << " work1 \n" << std::endl;
+}
