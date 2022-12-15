@@ -51,7 +51,7 @@ void ThreadPool::WorkerThread()
 			lock.unlock();
 
 			// 해당 job 을 수행한다 :)
-			//job();
+			job();
 		}
 
 	}
@@ -70,6 +70,7 @@ void ThreadPool::EnqueueJob(std::function<void()> job)
 {
 	if (stop_all) 
 	{
+		int temp = 1;
 		//throw std::runtime_error("ThreadPool 사용 중지됨");
 	}
 	
@@ -86,6 +87,7 @@ void ThreadPool::EnqueueJob_Promise(std::function<void()> job)
 {
 	if (stop_all)
 	{
+		int temp = 1;
 		//throw std::runtime_error("ThreadPool 사용 중지됨");
 	}
 
