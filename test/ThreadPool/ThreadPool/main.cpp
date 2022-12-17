@@ -7,8 +7,8 @@ int main()
 {
 // 	std::cout << "test" << std::endl;
 // 
-// 	ThreadPool pool(3);
-// 
+//	ThreadPool pool(3);
+
 // 	for (int i = 0; i < 10; i++)
 // 	{
 // 		pool.EnqueueJob([i]()
@@ -18,12 +18,14 @@ int main()
 // 		t1.work1(i);
 // 			});
 // 	}
+// 
+// 	boost::asio::io_service io_service;
+// 
+// 	AsyncServerTest server(io_service);
+// 
+// 	io_service.run();
 
-	boost::asio::io_service io_service;
-
-	AsyncServerTest server(io_service);
-
-	io_service.run();
+	AsyncServerTest server;
 
 	return 0;
 }

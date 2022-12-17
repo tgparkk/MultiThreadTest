@@ -5,6 +5,7 @@
 #include <mutex>
 #include <queue>
 #include <future>
+#include <iostream>
 
 class ThreadPool
 {
@@ -27,7 +28,7 @@ private:
 	// 할일들을 보관하는 job 큐.
 	std::queue<std::function<void()>> m_jobs;
 
-	std::condition_variable m_cv_job_q_;
+	std::condition_variable m_cv_job_q;
 	std::mutex m_job_q;
 
 	// 모든 쓰레드 종료

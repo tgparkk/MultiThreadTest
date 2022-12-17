@@ -21,7 +21,7 @@ public:
 	TCP_Client(boost::asio::io_service& io_service)
 		: m_io_service(io_service),
 		m_Socket(io_service),
-		m_nSeqNumber(0)
+		m_nSeqNumber(100)
 	{}
 
 	void Connect(boost::asio::ip::tcp::endpoint& endpoint)
@@ -37,7 +37,7 @@ private:
 		if (m_Socket.is_open() == false)
 			return;
 
-		if (m_nSeqNumber > 7)
+		if (m_nSeqNumber > 107)
 		{
 			m_Socket.close();
 			return;

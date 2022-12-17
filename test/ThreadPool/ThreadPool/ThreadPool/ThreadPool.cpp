@@ -13,7 +13,7 @@ ThreadPool::ThreadPool(size_t num_threads)
 ThreadPool::~ThreadPool() 
 {
 	m_stop_all = true;
-	m_cv_job_q_.notify_all();
+	m_cv_job_q.notify_all();
 
 	for (auto& t : m_worker_threads) 
 	{
@@ -28,7 +28,7 @@ void ThreadPool::WorkerThread()
 		// std::lock_guard 는 lock과 unlock 사이에 lock,unlock 사용 불가
 		std::unique_lock<std::mutex> lock(m_job_q);
 
-		m_cv_job_q_.wait(lock, [this]() { return !m_jobs.empty() || m_stop_all; });
+		m_cv_job_q.wait(lock, [this]() { return !m_jobs.empty() || m_stop_all; });
 		// 1) Lock을 잡은 상태
 		// 2) 조건 확인
 		//	- 만족 O => 빠져 나와서 이어서 코드를 진행(락을 획득하고 탈출)
@@ -40,7 +40,7 @@ void ThreadPool::WorkerThread()
 		// 주석하면 서버 상태?
 		if (m_stop_all && m_jobs.empty())
 		{
-			return;
+			std::cout << "no job" << std::endl;
 		}
 
 		if (!m_jobs.empty())
@@ -80,7 +80,7 @@ void ThreadPool::EnqueueJob(std::function<void()> job)
 	}
 	
 	// 대기하고 있는 하나의 thread 깨우기
-	m_cv_job_q_.notify_one();
+	m_cv_job_q.notify_one();
 }
 
 void ThreadPool::EnqueueJob_Promise(std::function<void()> job)
