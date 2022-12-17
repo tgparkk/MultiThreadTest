@@ -1,21 +1,21 @@
 #include "ThreadPool.h"
 
 ThreadPool::ThreadPool(size_t num_threads)
-	: num_threads_(num_threads), stop_all(false) 
+	: m_num_threads(num_threads), m_stop_all(false) 
 {
-	worker_threads_.reserve(num_threads_);
-	for (size_t i = 0; i < num_threads_; ++i) 
+	m_worker_threads.reserve(m_num_threads);
+	for (size_t i = 0; i < m_num_threads; ++i) 
 	{
-		worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+		m_worker_threads.emplace_back([this]() { this->WorkerThread(); });
 	}
 }
 
 ThreadPool::~ThreadPool() 
 {
-	stop_all = true;
-	cv_job_q_.notify_all();
+	m_stop_all = true;
+	m_cv_job_q_.notify_all();
 
-	for (auto& t : worker_threads_) 
+	for (auto& t : m_worker_threads) 
 	{
 		t.join();
 	}
@@ -26,9 +26,9 @@ void ThreadPool::WorkerThread()
 	while (true) 
 	{
 		// std::lock_guard 는 lock과 unlock 사이에 lock,unlock 사용 불가
-		std::unique_lock<std::mutex> lock(m_job_q_);
+		std::unique_lock<std::mutex> lock(m_job_q);
 
-		cv_job_q_.wait(lock, [this]() { return !jobs_.empty() || stop_all; });
+		m_cv_job_q_.wait(lock, [this]() { return !m_jobs.empty() || m_stop_all; });
 		// 1) Lock을 잡은 상태
 		// 2) 조건 확인
 		//	- 만족 O => 빠져 나와서 이어서 코드를 진행(락을 획득하고 탈출)
@@ -38,16 +38,16 @@ void ThreadPool::WorkerThread()
 
 
 		// 주석하면 서버 상태?
-		if (stop_all && jobs_.empty())
+		if (m_stop_all && m_jobs.empty())
 		{
 			return;
 		}
 
-		if (!jobs_.empty())
+		if (!m_jobs.empty())
 		{
 			// 맨 앞의 job 을 뺀다.
-			std::function<void()> job = std::move(jobs_.front());
-			jobs_.pop();
+			std::function<void()> job = std::move(m_jobs.front());
+			m_jobs.pop();
 			lock.unlock();
 
 			// 해당 job 을 수행한다 :)
@@ -68,24 +68,24 @@ void ThreadPool::WorkerThread_Promise()
 
 void ThreadPool::EnqueueJob(std::function<void()> job) 
 {
-	if (stop_all) 
+	if (m_stop_all) 
 	{
 		int temp = 1;
 		//throw std::runtime_error("ThreadPool 사용 중지됨");
 	}
 	
 	{
-		std::lock_guard<std::mutex> lock(m_job_q_);
-		jobs_.push(std::move(job));
+		std::lock_guard<std::mutex> lock(m_job_q);
+		m_jobs.push(std::move(job));
 	}
 	
 	// 대기하고 있는 하나의 thread 깨우기
-	cv_job_q_.notify_one();
+	m_cv_job_q_.notify_one();
 }
 
 void ThreadPool::EnqueueJob_Promise(std::function<void()> job)
 {
-	if (stop_all)
+	if (m_stop_all)
 	{
 		int temp = 1;
 		//throw std::runtime_error("ThreadPool 사용 중지됨");

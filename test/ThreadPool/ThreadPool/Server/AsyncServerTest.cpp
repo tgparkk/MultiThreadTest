@@ -24,7 +24,10 @@ void AsyncServerTest::StartAccept()
 
 	m_pSession = new Session(m_io_service);
 
-	m_acceptor.async_accept(m_pSession->Socket(), boost::bind(&AsyncServerTest::handle_accept, this, m_pSession, boost::asio::placeholders::error));
+	m_acceptor.async_accept(m_pSession->Socket()
+		, boost::bind(&AsyncServerTest::handle_accept
+			, this, m_pSession
+			, boost::asio::placeholders::error));
 }
 
 void AsyncServerTest::handle_accept(Session* pSession, const boost::system::error_code& error)
@@ -56,7 +59,9 @@ void Session::PostReceive()
 
 	m_socket.async_read_some
 	(boost::asio::buffer(m_receiveBuffer)
-		, boost::bind(&Session::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		, boost::bind(&Session::handle_receive
+			, this, boost::asio::placeholders::error
+			, boost::asio::placeholders::bytes_transferred));
 }
 
 void Session::handle_write(const boost::system::error_code& /*error*/, size_t /*bytes_transferred*/)

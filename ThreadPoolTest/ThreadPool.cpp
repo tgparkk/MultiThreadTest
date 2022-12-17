@@ -6,13 +6,15 @@ ThreadPool::ThreadPool(size_t num_threads)
 	worker_threads_.reserve(num_threads_);
 	for (size_t i = 0; i < num_threads_; ++i) 
 	{
-		worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+		worker_threads_.emplace_back([this]() { WorkerThread(); });
 	}
 }
 
 ThreadPool::~ThreadPool() 
 {
 	stop_all = true;
+
+	// 
 	cv_job_q_.notify_all();
 
 	for (auto& t : worker_threads_) 
@@ -35,7 +37,7 @@ void ThreadPool::WorkerThread()
 		//	- 만족 X => Lock을 원자적으로 풀고 블락됨(wait(loci))
 		//		a) notify_xxx()가 호출되면 스레드가 깨어난다
 		//		b) lock을 다시 얻고(wait(lock), 2)부터 반복
-
+		
 
 		// 주석하면 서버 상태?
 		if (stop_all && jobs_.empty())
@@ -51,18 +53,9 @@ void ThreadPool::WorkerThread()
 			lock.unlock();
 
 			// 해당 job 을 수행한다 :)
-			//job();
+			job(); //work, work1
 		}
 
-	}
-}
-
-void ThreadPool::WorkerThread_Promise()
-{
-	while (true)
-	{
-		std::promise<void*> p;
-		std::future<void*> data = p.get_future();
 	}
 }
 
