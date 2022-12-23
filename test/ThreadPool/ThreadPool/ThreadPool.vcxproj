@@ -133,12 +133,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Server\Acceptor.cpp" />
     <ClCompile Include="Server\AsyncServerTest.cpp" />
+    <ClCompile Include="Server\Server.cpp" />
+    <ClCompile Include="Server\Service.cpp" />
+    <ClCompile Include="Server\worker_common.cpp" />
+    <ClCompile Include="Server\worker_creator.cpp" />
     <ClCompile Include="Task\Task1.cpp" />
     <ClCompile Include="ThreadPool\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Server\Acceptor.h" />
     <ClInclude Include="Server\AsyncServerTest.h" />
+    <ClInclude Include="Server\iworker.h" />
+    <ClInclude Include="Server\Server.h" />
+    <ClInclude Include="Server\Service.h" />
+    <ClInclude Include="Server\worker_common.h" />
+    <ClInclude Include="Server\worker_creator.h" />
     <ClInclude Include="Task\Task1.h" />
     <ClInclude Include="ThreadPool\ThreadPool.h" />
   </ItemGroup>
