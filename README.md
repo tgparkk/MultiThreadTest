@@ -31,6 +31,11 @@ AsyncTcpClient::AsyncTcpClient(unsigned char num_thread)
 
 2. 다른 클래스에서 AsyncTcpClient 클래스를 이용한 서버로 콜백함수 send
 ```c++
+request.h
+typedef Req_Int<eNetID::Req_Welcome_V1>	ReqWelcomeMsg_V1;
+```
+
+```c++
 client.SetEndpoints(address, cotree2_port);
 /*
 void AsyncTcpClient::SetEndpoints(const std::string& server_name, const std::string& port)
@@ -38,7 +43,6 @@ boost::asio::ip::tcp::resolver resolver(m_ios);
 boost::system::error_code error;
 m_endpoints = resolver.resolve(server_name, port, error);
 */
-
 // 서버로 콜백함수 send
 client.send_request(new ReqWelcomeMsg_V1(2022), 
 		boost::bind(&UtilServer::OnRequestWelcome, this, _1, _2));
@@ -141,5 +145,29 @@ onRequsetComplete(error);
 	}
 ```
 
+5. clinet 에서 server 로 비동기 요청 예제
+```c++
+request.h
+typedef Req_Ellipse_Loadtype_Area<eNetID::Req_LoadPolylines_Area_V1, int> ReqLoadPolylinesArea_V1;
+```
 
+```c++
+void FirstDataLoader::load_polyline(AsyncTcpClient& client)
+{
+	client.send_request(new ReqLoadPolylinesArea_V1(m_ellipsoid, kairosman.GetLevel(), Area), 
+		boost::bind(&FirstDataLoader::OnRequestSelectPolylineNew, this, _1, _2));
+}
+```
 
+5.1 요청함수의 예외처리, 데이터 get
+```c++
+respone.h
+typedef Res_vector<eNetID::Res_LoadPolylines_V1, out::Polyline>	ResLoadPolylines_V1;
+```
+
+```c++
+void FirstDataLoader::OnRequestSelectPolylineNew(const IMessage* msg, const boost::system::error_code& ec)
+{
+	const ResLoadPolylines_V1* response = dynamic_cast<const ResLoadPolylines_V1*>(msg);	
+}
+```
