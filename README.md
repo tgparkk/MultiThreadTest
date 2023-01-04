@@ -99,16 +99,47 @@ void Session::on_connect(const boost::system::error_code& error)
 }
 ```
 
-4.2 비동기로 요청사항 쓰기(write)
+4.2 비동기로 쓰기(write)
 ```c++
 void Session::do_process()
 {
-	///
-  ///
+///
+///
 
 	boost::asio::async_write(m_sock, m_request_buf, boost::bind(&Session::on_write_request, shared_from_this(), _1));
 }
 ```
 
-4.3 비동기로 
+4.3 비동기로 읽기(read) (header)
+```c++
+// 헤더/바디 따로 읽기 	
+/// 헤더에는 msgID, bodysize
+	boost::asio::async_read(m_sock, 
+		boost::asio::buffer((char*)&m_response_header, sizeof(m_response_header)), 
+		boost::bind(&Session::on_read_response_header, shared_from_this(), _1));
+```
+
+4.4  body 읽기
+```c++
+
+/// std::string m_response_body; 은 Session 의 멤버변수
+
+boost::asio::async_read(m_sock, 
+		boost::asio::buffer(&m_response_body[0], m_response_body.size()), 
+		boost::bind(&Session::on_read_response_body, shared_from_this(), _1));
+```
+데이터는 m_response_body 에 저장되어있어요.
+```c++
+IMessage* response = MsgCreator::create(m_response_header.msg_id());
+response->load_from(m_response_body);
+onRequsetComplete(error);
+```
+```c++
+// 사용자가 제공한 콜백을 호출한다.
+	if (m_callback) {
+		m_callback(m_response, ec);
+	}
+```
+
+
 
