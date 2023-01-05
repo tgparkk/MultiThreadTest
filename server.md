@@ -158,6 +158,7 @@ void Service::on_read_request_body(const boost::system::error_code& error)
 		return;
 	}
 	
+	// virtual 함수로 목적에 맞게 캐스팅되어 실제 디비호출하는 부분
 	m_response = m_worker->processing();
 	if (!m_response) 
 	{
@@ -171,4 +172,30 @@ void Service::on_read_request_body(const boost::system::error_code& error)
 }
 ```
 
+```c++
+// client로 보내기 위해 비동기 쓰기(write)
+```c++
+void Service::send_response(const IMessage* response)
+{
+	//응답을 stream으로 
+	std::string body;
+
+	ch::system_clock::time_point comp_start = ch::system_clock::now();
+	response->save_to(body);
+	ch::duration<double> comp_delta = ch::system_clock::now() - comp_start;
+
+	MsgHeader header(response->msg_id(), (int)body.size());
+	
+	std::ostream dummy(&m_response_buf);
+	dummy.write((const char*)&header, sizeof(header));
+	dummy.write((const char*)&body[0], body.size());
+
+	boost::asio::async_write(m_sock, m_response_buf, boost::bind(&Service::on_write_response, shared_from_this(), _1));
+
+	const std::wstring& id_name = EnumStringW<eNetID::T>::From(response->msg_id());
+	AELOG(L"responsed msg:(%s,%s) comp_time:%f, size:%d", id_name.c_str(), response->to_string().c_str(), comp_delta, body.size());
+	GetRunningInfo().m_res_sended_count++; //atomic
+
+}
+```
 
