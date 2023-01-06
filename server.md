@@ -11,8 +11,8 @@ boost::thread_group m_threads;
 void Server::start_server(unsigned short port, unsigned int thread_pool_size, boost::system::error_code& ec)
 {
 	m_acc = new Acceptor(m_ios, port);
-  boost::system::error_code prepare_ec;
-  // 소켓 설정
+  	boost::system::error_code prepare_ec;
+  	// 소켓 설정
 	m_acc->prepare(prepare_ec);
 	m_acc->async_accept_start();
 	for (int i = 0; i < thread_pool_size; ++i) 
@@ -90,6 +90,7 @@ void Acceptor::on_accept(boost::shared_ptr<Service> service, const boost::system
 	}
 	else
 	{
+		// 작업을 수행하는 부분
 		service->run_service();
 	}
 
@@ -107,6 +108,7 @@ void Acceptor::on_accept(boost::shared_ptr<Service> service, const boost::system
 
 2. 비동기로 요청 읽기(헤더, 바디)
 ```c++
+// class Service
 // member variable
 boost::asio::ip::tcp::socket m_sock;
 //요청
@@ -130,7 +132,7 @@ void Service::run_service()
 ```c++
 void Service::on_read_request_header(const boost::system::error_code& error)
 {
-///
+/// header가 문제 없다면 body를 읽자
 	m_request_body.resize(m_request_header.body_size(), 0);
 	boost::asio::async_read(m_sock, 
 		boost::asio::buffer(&m_request_body[0], m_request_body.size()), 
@@ -142,12 +144,16 @@ void Service::on_read_request_header(const boost::system::error_code& error)
 void Service::on_read_request_body(const boost::system::error_code& error)
 {
 ///
+	// IMessage* m_request;
+	// 메시지를 관리하는 클래스에서 바디를 읽는 부분
 	m_request->load_from(m_request_body);
 
 	const std::wstring& id_name = EnumStringW<eNetID::T>::From(m_request->msg_id());
 
 	GetRunningInfo().m_req_received_count++; //atomic
 	
+	// IWorker* m_worker;
+	// interface로 client로 부터 받은 메시지를 통해 작업 생성
 	m_worker = createWorker(m_request);
 	if (!m_worker) 
 	{
