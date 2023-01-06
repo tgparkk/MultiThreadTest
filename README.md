@@ -168,6 +168,8 @@ typedef Res_vector<eNetID::Res_LoadPolylines_V1, out::Polyline>	ResLoadPolylines
 ```c++
 void FirstDataLoader::OnRequestSelectPolylineNew(const IMessage* msg, const boost::system::error_code& ec)
 {
-	const ResLoadPolylines_V1* response = dynamic_cast<const ResLoadPolylines_V1*>(msg);	
+	// 서버에서 받은 데이터 읽기
+	const ResLoadPolylines_V1* response = dynamic_cast<const ResLoadPolylines_V1*>(msg);
+	const std::vector<out::Polyline>& datas = response->getdatas();
 }
 ```
