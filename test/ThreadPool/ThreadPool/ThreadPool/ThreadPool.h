@@ -10,7 +10,7 @@
 class ThreadPool
 {
 public:
-	ThreadPool(size_t num_threads);
+	ThreadPool(std::size_t num_threads);
 	~ThreadPool();
 
 public:
@@ -21,7 +21,7 @@ public:
 
 private:
 	// 총 Worker 쓰레드의 개수.
-	size_t m_num_threads;
+	std::size_t m_num_threads;
 	// Worker 쓰레드를 보관하는 벡터.
 	std::vector<std::thread> m_worker_threads;
 

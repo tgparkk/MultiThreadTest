@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{bd0cf3fe-a6b8-41dc-b718-8f30f30cf238}</ProjectGuid>
     <RootNamespace>ThreadPool</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +140,6 @@
     <ClCompile Include="Server\worker_common.cpp" />
     <ClCompile Include="Server\worker_creator.cpp" />
     <ClCompile Include="Task\Task1.cpp" />
-    <ClCompile Include="ThreadPool\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server\Acceptor.h" />
@@ -151,7 +150,6 @@
     <ClInclude Include="Server\worker_common.h" />
     <ClInclude Include="Server\worker_creator.h" />
     <ClInclude Include="Task\Task1.h" />
-    <ClInclude Include="ThreadPool\ThreadPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

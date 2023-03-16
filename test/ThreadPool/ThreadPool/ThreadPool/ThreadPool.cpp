@@ -1,10 +1,13 @@
 #include "ThreadPool.h"
 
-ThreadPool::ThreadPool(size_t num_threads)
+ThreadPool::ThreadPool(std::size_t num_threads)
 	: m_num_threads(num_threads), m_stop_all(false) 
 {
-	m_worker_threads.reserve(m_num_threads);
-	for (size_t i = 0; i < m_num_threads; ++i) 
+
+	
+
+	m_worker_threads(m_num_threads);
+	for (std::size_t i = 0; i < m_num_threads; ++i)
 	{
 		m_worker_threads.emplace_back([this]() { this->WorkerThread(); });
 	}

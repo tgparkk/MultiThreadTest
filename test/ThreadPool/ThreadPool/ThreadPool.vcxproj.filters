@@ -27,9 +27,6 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadPool\ThreadPool.cpp">
-      <Filter>소스 파일\ThreadPool</Filter>
-    </ClCompile>
     <ClCompile Include="Task\Task1.cpp">
       <Filter>소스 파일\Task</Filter>
     </ClCompile>
@@ -53,9 +50,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ThreadPool\ThreadPool.h">
-      <Filter>소스 파일\ThreadPool</Filter>
-    </ClInclude>
     <ClInclude Include="Task\Task1.h">
       <Filter>소스 파일\Task</Filter>
     </ClInclude>
