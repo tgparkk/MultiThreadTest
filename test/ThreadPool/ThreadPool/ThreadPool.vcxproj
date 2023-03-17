@@ -132,9 +132,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Common\imessage.cpp" />
     <ClCompile Include="Server\Acceptor.cpp" />
     <ClCompile Include="Server\AsyncServerTest.cpp" />
+    <ClCompile Include="Server\request_creator.cpp" />
     <ClCompile Include="Server\Server.cpp" />
     <ClCompile Include="Server\Service.cpp" />
     <ClCompile Include="Server\worker_common.cpp" />
@@ -142,9 +143,12 @@
     <ClCompile Include="Task\Task1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common\imessage.h" />
+    <ClInclude Include="imessage.h" />
     <ClInclude Include="Server\Acceptor.h" />
     <ClInclude Include="Server\AsyncServerTest.h" />
     <ClInclude Include="Server\iworker.h" />
+    <ClInclude Include="Server\request_creator.h" />
     <ClInclude Include="Server\Server.h" />
     <ClInclude Include="Server\Service.h" />
     <ClInclude Include="Server\worker_common.h" />

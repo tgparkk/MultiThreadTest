@@ -39,7 +39,7 @@ public:
 	void compress_start_size(int start_size) {m_comp_start_size = start_size;}
 	int compress_start_size() const {return m_comp_start_size;}
 
-	void save_to(OUT std::string& buf) const;
+	//void save_to(OUT std::string& buf) const;
 	void load_from(const std::string& buf);
 private:
 	virtual void on_save_to(ae_binary_oarchive& archive) const = 0;

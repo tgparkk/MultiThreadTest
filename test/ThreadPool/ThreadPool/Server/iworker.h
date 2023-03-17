@@ -1,6 +1,6 @@
 #pragma once
 
-#include "imessage.h"
+#include "../Common/imessage.h"
 
 class IWorker
 {

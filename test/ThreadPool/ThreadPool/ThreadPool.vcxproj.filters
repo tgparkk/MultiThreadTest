@@ -22,11 +22,11 @@
     <Filter Include="소스 파일\Server">
       <UniqueIdentifier>{ea7f95bb-f10d-4511-a710-94a3f33df13f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Common">
+      <UniqueIdentifier>{032708c2-4a66-4f32-873f-1ffcc92ea985}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Task\Task1.cpp">
       <Filter>소스 파일\Task</Filter>
     </ClCompile>
@@ -46,6 +46,12 @@
       <Filter>소스 파일\Server</Filter>
     </ClCompile>
     <ClCompile Include="Server\worker_creator.cpp">
+      <Filter>소스 파일\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\imessage.cpp">
+      <Filter>소스 파일\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\request_creator.cpp">
       <Filter>소스 파일\Server</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,6 +78,15 @@
       <Filter>소스 파일\Server</Filter>
     </ClInclude>
     <ClInclude Include="Server\worker_creator.h">
+      <Filter>소스 파일\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="imessage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\imessage.h">
+      <Filter>소스 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\request_creator.h">
       <Filter>소스 파일\Server</Filter>
     </ClInclude>
   </ItemGroup>

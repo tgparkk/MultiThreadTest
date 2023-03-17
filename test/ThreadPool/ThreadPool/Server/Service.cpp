@@ -1,12 +1,12 @@
 #include "Service.h"
-
+#include "../Common/re"
 
 Service::Service(boost::asio::io_service& ios)
 	:
 	m_sock(ios),
-	//m_request_header(),
+	m_request_header(),
 	m_request_body(),
-	//m_request(NULL),
+	m_request(NULL),
 	//m_worker(NULL),
 	//m_response(NULL),
 	m_response_buf()
@@ -25,10 +25,10 @@ Service::~Service()
 // 		m_worker = NULL;
 // 	}
 // 
-// 	if (m_request) {
-// 		delete m_request;
-// 		m_request = NULL;
-// 	}
+ 	if (m_request) {
+ 		delete m_request;
+ 		m_request = NULL;
+ 	}
 // 
 // 	//m_sock.cancel();
 
@@ -39,9 +39,9 @@ Service::~Service()
 
 void Service::run_service()
 {
-// 	boost::asio::async_read(m_sock,
-// 		boost::asio::buffer((char*)&m_request_header, sizeof(m_request_header)),
-// 		boost::bind(&Service::on_read_request_header, shared_from_this(), _1));
+ 	boost::asio::async_read(m_sock,
+ 		boost::asio::buffer((char*)&m_request_header, sizeof(m_request_header)),
+ 		boost::bind(&Service::on_read_request_header, shared_from_this(), _1));
 }
 
 
@@ -126,7 +126,7 @@ void Service::send_response(const IMessage* response)
 	std::string body;
 
 	ch::system_clock::time_point comp_start = ch::system_clock::now();
-	response->save_to(body);
+	//response->save_to(body);
 	ch::duration<double> comp_delta = ch::system_clock::now() - comp_start;
 
 	MsgHeader header(response->msg_id(), (int)body.size());

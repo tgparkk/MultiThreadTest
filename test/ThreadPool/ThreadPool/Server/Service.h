@@ -3,6 +3,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include "../Common/imessage.h"
 
 
 //소켓에서 하나의 Request를 읽어 처리하고 Response 보내는 기능을 한다. 내부 소켓을 가지고 
@@ -26,9 +27,9 @@ private:
 	boost::asio::ip::tcp::socket m_sock;
 
 	//요청
-	//MsgHeader m_request_header;
+	MsgHeader m_request_header;
 	std::string m_request_body;
-	//IMessage* m_request;
+	IMessage* m_request;
 
 	//작업
 	//IWorker* m_worker;
