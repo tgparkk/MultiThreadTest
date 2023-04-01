@@ -1,6 +1,8 @@
 # MultiThreadTest
 
-server.cpp -> accepctor.cpp
+
+
+server.cpp -> accepctor.cpp 에서 service 시작, message 클래스를 이용해 데이터 포맷에 맞게 받기
 
 
 ## thread_group, thread
