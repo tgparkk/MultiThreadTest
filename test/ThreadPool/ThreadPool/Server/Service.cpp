@@ -1,5 +1,6 @@
 #include "Service.h"
-#include "../Common/re"
+#include "worker_creator.h"
+#include "request_creator.h"
 
 Service::Service(boost::asio::io_service& ios)
 	:
@@ -41,7 +42,7 @@ void Service::run_service()
 {
  	boost::asio::async_read(m_sock,
  		boost::asio::buffer((char*)&m_request_header, sizeof(m_request_header)),
- 		boost::bind(&Service::on_read_request_header, shared_from_this(), _1));
+ 		std::bind(&Service::on_read_request_header, shared_from_this(), std::placeholders::_1));
 }
 
 
@@ -49,14 +50,14 @@ void Service::run_service()
 {
 	boost::asio::async_read(m_sock, 
 		boost::asio::buffer((char*)&m_request_header, sizeof(m_request_header)), 
-		boost::bind(&Service::on_read_request_header, shared_from_this(), _1));
+		std::bind(&Service::on_read_request_header, shared_from_this(), std::placeholders::_1));
 }
 
 void Service::on_read_request_header(const boost::system::error_code& error)
 {
 	if (error)
 	{
-		AELOG("on_read_request_header error:%s", error.message().c_str());
+		//AELOG("on_read_request_header error:%s", error.message().c_str());
 		return;
 	}
 
@@ -69,7 +70,7 @@ void Service::on_read_request_header(const boost::system::error_code& error)
 	m_request_body.resize(m_request_header.body_size(), 0);
 	boost::asio::async_read(m_sock, 
 		boost::asio::buffer(&m_request_body[0], m_request_body.size()), 
-		boost::bind(&Service::on_read_request_body, shared_from_this(), _1));
+		std::bind(&Service::on_read_request_body, shared_from_this(), std::placeholders::_1));
 	
 }
 
@@ -77,7 +78,7 @@ void Service::on_read_request_body(const boost::system::error_code& error)
 {
 	if (error)
 	{
-		AELOG("on_read_request_body error:%s", error.message().c_str());
+		//AELOG("on_read_request_body error:%s", error.message().c_str());
 		return;
 	}
 	
@@ -147,7 +148,7 @@ void Service::on_write_response(const boost::system::error_code& error)
 {
 	if (error)
 	{
-		AELOG("on_write_response error:%s", error.message().c_str());
+		//AELOG("on_write_response error:%s", error.message().c_str());
 		return;
 	}
 	
