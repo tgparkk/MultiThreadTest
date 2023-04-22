@@ -9,6 +9,7 @@
 
 #include "resource.h"       // 주 기호입니다.
 
+#include "CDlgClient.h"
 
 // CclientApp:
 // 이 클래스의 구현에 대해서는 client.cpp을(를) 참조하세요.
@@ -34,6 +35,8 @@ public:
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+
+	CDlgClient* dlg;
 };
 
 extern CclientApp theApp;

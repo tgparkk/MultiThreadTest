@@ -59,6 +59,8 @@ CclientApp::CclientApp() noexcept
 CclientApp theApp;
 
 
+#include "CDlgClient.h"
+
 // CclientApp 초기화
 
 BOOL CclientApp::InitInstance()
@@ -145,6 +147,10 @@ BOOL CclientApp::InitInstance()
 	// 주 창이 초기화되었으므로 이를 표시하고 업데이트합니다.
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
+
+	dlg = new CDlgClient();
+	dlg->Create(IDD_DLG_CLIENT);
+	dlg->ShowWindow(SW_SHOW);
 
 	return TRUE;
 }

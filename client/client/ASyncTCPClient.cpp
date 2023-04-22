@@ -35,15 +35,14 @@ void ASyncTCPClient::emulateLongComputationOp(
 	// Because active sessions list can be accessed from 
 	// multiple threads, we guard it with a mutex to avoid 
 	// data corruption.
-	std::unique_lock<std::mutex>
-		lock(m_active_sessions_guard);
+	std::unique_lock<std::mutex> lock(m_active_sessions_guard);
 
 	m_active_sessions[request_id] = session;
 	lock.unlock();
 	session->m_sock.async_connect(session->m_ep,
 		[this, session](const boost::system::error_code& ec)
 		{
-			if (ec) {
+			if (ec.failed()) {
 				session->m_ec = ec;
 				onRequestComplete(session);
 				return;
@@ -59,13 +58,13 @@ void ASyncTCPClient::emulateLongComputationOp(
 		[this, session](const boost::system::error_code& ec,
 			std::size_t bytes_transferred)
 		{
-			if (ec) {
+			if (ec.failed()) {
 				session->m_ec = ec;
 				onRequestComplete(session);
 				return;
 			}
-	std::unique_lock<std::mutex>
-		cancel_lock(session->m_cancel_guard);
+	std::unique_lock<std::mutex> cancel_lock(session->m_cancel_guard);
+
 	if (session->m_was_cancelled) {
 		onRequestComplete(session);
 		return;
@@ -77,7 +76,7 @@ void ASyncTCPClient::emulateLongComputationOp(
 			std::size_t bytes_transferred)
 
 		{
-			if (ec) {
+			if (!ec.failed()) {
 				session->m_ec = ec;
 			}
 			else {
@@ -90,10 +89,10 @@ void ASyncTCPClient::emulateLongComputationOp(
 
 void ASyncTCPClient::cancelRequest(unsigned int request_id)
 {
-	std::unique_lock<std::mutex>
-		lock(m_active_sessions_guard);
+	std::unique_lock<std::mutex> lock(m_active_sessions_guard);
 	auto it = m_active_sessions.find(request_id);
-	if (it != m_active_sessions.end()) {
+	if (it != m_active_sessions.end()) 
+	{
 		std::unique_lock<std::mutex>
 			cancel_lock(it->second->m_cancel_guard);
 		it->second->m_was_cancelled = true;
@@ -121,19 +120,19 @@ void ASyncTCPClient::onRequestComplete(std::shared_ptr<Session> session) {
 		boost::asio::ip::tcp::socket::shutdown_both,
 		ignored_ec);
 	// Remove session form the map of active sessions.
-	std::unique_lock<std::mutex>
-		lock(m_active_sessions_guard);
+	std::unique_lock<std::mutex> lock(m_active_sessions_guard);
+
 	auto it = m_active_sessions.find(session->m_id);
 	if (it != m_active_sessions.end())
 		m_active_sessions.erase(it);
 	lock.unlock();
 	boost::system::error_code ec;
-	if (!session->m_ec && session->m_was_cancelled)
+	if (session->m_ec && session->m_was_cancelled)
 		ec = boost::asio::error::operation_aborted;
 	else
 		ec = session->m_ec;
+
 	// Call the callback provided by the user.
-	session->m_callback(session->m_id,
-		session->m_response, ec);
+	session->m_callback(session->m_id, session->m_response, ec);
 };
 

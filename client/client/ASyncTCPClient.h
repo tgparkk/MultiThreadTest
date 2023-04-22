@@ -65,7 +65,7 @@ class ASyncTCPClient : public boost::noncopyable
 {
 public:
 	ASyncTCPClient();
-	~ASyncTCPClient();
+	
 
 	void emulateLongComputationOp(
 		unsigned int duration_sec,

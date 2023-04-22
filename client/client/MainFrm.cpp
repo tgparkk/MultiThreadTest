@@ -36,6 +36,8 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
+#include "CDlgClient.h"
+
 // CMainFrame 생성/소멸
 
 CMainFrame::CMainFrame() noexcept
