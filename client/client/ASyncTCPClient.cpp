@@ -18,7 +18,7 @@ void ASyncTCPClient::emulateLongComputationOp(
 	unsigned int request_id)
 {
 	// Preparing the request string.
-	std::string request = "EMULATE_LONG_CALC_OP "
+	std::string request = "EMULATE_LONG_CALC_OP tgparkk "
 		+ std::to_string(duration_sec)
 		+ "\n";
 	std::shared_ptr<Session> session =
@@ -43,12 +43,17 @@ void ASyncTCPClient::emulateLongComputationOp(
 		[this, session](const boost::system::error_code& ec)
 		{
 			if (ec.failed()) {
+
+				std::cout << ec.what() << std::endl;
+
+				std::string str = ec.what();
+
 				session->m_ec = ec;
 				onRequestComplete(session);
 				return;
 			}
-	std::unique_lock<std::mutex>
-		cancel_lock(session->m_cancel_guard);
+	std::unique_lock<std::mutex>cancel_lock(session->m_cancel_guard);
+
 	if (session->m_was_cancelled) {
 		onRequestComplete(session);
 		return;

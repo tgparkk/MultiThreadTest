@@ -37,6 +37,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 	CDlgClient* dlg;
+	afx_msg void OnRequest();
 };
 
 extern CclientApp theApp;

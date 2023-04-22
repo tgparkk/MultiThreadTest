@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CclientApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// 표준 인쇄 설정 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+	ON_COMMAND(ID_REQUEST, &CclientApp::OnRequest)
 END_MESSAGE_MAP()
 
 
@@ -57,9 +58,6 @@ CclientApp::CclientApp() noexcept
 // 유일한 CclientApp 개체입니다.
 
 CclientApp theApp;
-
-
-#include "CDlgClient.h"
 
 // CclientApp 초기화
 
@@ -148,9 +146,7 @@ BOOL CclientApp::InitInstance()
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
 
-	dlg = new CDlgClient();
-	dlg->Create(IDD_DLG_CLIENT);
-	dlg->ShowWindow(SW_SHOW);
+
 
 	return TRUE;
 }
@@ -231,3 +227,14 @@ void CclientApp::SaveCustomState()
 
 
 
+#include "CDlgClient.h"
+
+void CclientApp::OnRequest()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	dlg = new CDlgClient();
+	dlg->Create(IDD_DLG_CLIENT);
+	dlg->ShowWindow(SW_SHOW);
+
+}

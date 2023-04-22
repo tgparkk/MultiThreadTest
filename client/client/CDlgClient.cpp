@@ -63,12 +63,15 @@ void handler(unsigned int request_id,
 
 void CDlgClient::OnBnClickedOk()
 {
+	std::thread t1;
+
 	try {
 		ASyncTCPClient client;
 		// Here we emulate the user's behavior.
 		// User initiates a request with id 1.
-		client.emulateLongComputationOp(10, "112.175.61.171", 3333,
-			handler, 1);
+		client.emulateLongComputationOp(10, "112.175.61.171", 4000, handler, 1);
+
+		//client.emulateLongComputationOp(10, "127.0.0.1", 3333, handler, 1);
 
 		/*
 		// Then does nothing for 5 seconds.
@@ -88,7 +91,7 @@ void CDlgClient::OnBnClickedOk()
 		*/
 
 		// Decides to exit the application.
-		//client.close();
+		client.close();
 	}
 	catch (boost::system::system_error& e) {
 		std::cout << "Error occured! Error code = " << e.code()
